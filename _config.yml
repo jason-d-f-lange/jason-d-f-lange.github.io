@@ -1,6 +1,7 @@
 lsi: false
 safe: true
 source: /
+theme: jekyll-theme-cayman
 incremental: false
 highlighter: rouge
 gist:
