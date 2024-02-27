@@ -20,7 +20,7 @@ function App() {
 
   useEffect(() => {
     const init = async () => {
-      const image = await loadImage("src/assets/puzzle.jpg");
+      const image = await loadImage("puzzle.jpg");
       setImage(image);
       setTiles(generateTiles(image, columns));
     };
