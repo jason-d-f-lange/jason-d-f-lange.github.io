@@ -30,7 +30,7 @@ const shuffle = (tiles: TileData[]): TileData[] => {
     return tiles;
   };
 
-  for (let i = 0; i < 4; i++) {
+  while (tiles.some(tileInOriginalPosition)) {
     shuffleOnce(tiles);
   }
 
