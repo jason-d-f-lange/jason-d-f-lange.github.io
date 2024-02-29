@@ -1,9 +1,19 @@
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import Confetti from "react-confetti";
 import Settings from "./Settings";
 import Tileset from "./Tileset";
 import { TileData } from "./types/Tile";
-import { generateTiles, selectTile } from "./utils/TileUtils";
+import { generateTiles, puzzleSolved, selectTile } from "./utils/TileUtils";
 
 const loadImage = async (url: string): Promise<HTMLImageElement> =>
   new Promise((resolve) => {
@@ -19,6 +29,8 @@ function App() {
   const [highlightCorrectTiles, setHighlightCorrectTiles] =
     useState<boolean>(false);
   const [showOriginalImage, setShowOriginalImage] = useState<boolean>(false);
+
+  const solved = useMemo(() => puzzleSolved(tiles), [tiles]);
 
   useEffect(() => {
     loadImage("puzzle.jpg").then((image) => {
@@ -36,6 +48,7 @@ function App() {
     <div className="flex" style={{ height: "100%" }}>
       <div className="w-60 border-r p-6">
         <Settings
+          disabled={solved}
           columns={columns}
           onColumnsChanged={setColumns}
           highlightCorrectTiles={highlightCorrectTiles}
@@ -44,8 +57,13 @@ function App() {
       </div>
 
       <div className="p-6 w-full h-full flex flex-col gap-3 items-center justify-center overflow-hidden">
-        {showOriginalImage ? (
-          <img src="puzzle.jpg" height={image.height} width={image.width} />
+        {showOriginalImage || solved ? (
+          <img
+            src="puzzle.jpg"
+            height={image.height}
+            width={image.width}
+            className="cursor-not-allowed"
+          />
         ) : (
           <Tileset
             tiles={tiles}
@@ -57,13 +75,39 @@ function App() {
         )}
         <Button
           variant="outline"
-          disabled={!image}
+          disabled={!image || solved}
           onMouseEnter={() => setShowOriginalImage(true)}
           onMouseLeave={() => setShowOriginalImage(false)}
         >
           Hover over me to see the original image
         </Button>
       </div>
+
+      {solved && (
+        <>
+          <Confetti
+            style={{ zIndex: 51 }}
+            numberOfPieces={500}
+            tweenDuration={10000}
+            recycle={false}
+          />
+          <AlertDialog defaultOpen>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  You solved it <span className="text-2xl">🎉</span>
+                </AlertDialogTitle>
+                <AlertDialogDescription>
+                  Refresh the page to start again.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Dismiss</AlertDialogCancel>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </>
+      )}
     </div>
   );
 }

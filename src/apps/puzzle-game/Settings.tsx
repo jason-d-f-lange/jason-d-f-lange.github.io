@@ -4,6 +4,8 @@ import { Slider } from "@/components/ui/slider";
 import { ReactNode } from "react";
 
 type Props = {
+  disabled: boolean;
+
   columns: number;
   onColumnsChanged: (columns: number) => void;
 
@@ -16,6 +18,7 @@ const Setting = ({ children }: { children: ReactNode }) => {
 };
 
 function Settings({
+  disabled,
   columns,
   onColumnsChanged,
   highlightCorrectTiles,
@@ -46,6 +49,7 @@ function Settings({
           min={1}
           max={5}
           step={1}
+          disabled={disabled}
         />
       </Setting>
 
@@ -55,6 +59,7 @@ function Settings({
           name="highlightCorrect"
           checked={highlightCorrectTiles}
           onCheckedChange={handleHighlightCorrectTilesChanged}
+          disabled={disabled}
         />
       </Setting>
     </div>
