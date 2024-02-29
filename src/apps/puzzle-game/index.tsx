@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { TileData } from "../types/Tile";
-import { generateTiles, puzzleSolved, selectTile } from "../utils/TileUtils";
-import Controls from "./Controls";
+import Settings from "./Settings";
 import Tileset from "./Tileset";
+import { TileData } from "./types/Tile";
+import { generateTiles, selectTile } from "./utils/TileUtils";
 
 const loadImage = async (url: string): Promise<HTMLImageElement> =>
   new Promise((resolve) => {
@@ -19,13 +19,10 @@ function App() {
     useState<boolean>(false);
 
   useEffect(() => {
-    const init = async () => {
-      const image = await loadImage("puzzle.jpg");
+    loadImage("puzzle.jpg").then((image) => {
       setImage(image);
       setTiles(generateTiles(image, columns));
-    };
-
-    init();
+    });
   }, [columns]);
 
   const handleTileClick = (selectedTile: TileData) =>
@@ -34,25 +31,26 @@ function App() {
   if (!image) return null;
 
   return (
-    <>
-      <h1>Picture Puzzle</h1>
-      {puzzleSolved(tiles) && <h2>You won!</h2>}
+    <div className="flex" style={{ height: "100%" }}>
+      <div className="w-60 border-r p-6">
+        <Settings
+          columns={columns}
+          onColumnsChanged={setColumns}
+          highlightCorrectTiles={highlightCorrectTiles}
+          onHighlightCorrectTilesChanged={setHighlightCorrectTiles}
+        />
+      </div>
 
-      <Controls
-        columns={columns}
-        onColumnsChanged={setColumns}
-        highlightCorrectTiles={highlightCorrectTiles}
-        onHighlightCorrectTilesChanged={setHighlightCorrectTiles}
-      />
-
-      <Tileset
-        tiles={tiles}
-        onTileClick={handleTileClick}
-        width={image.width}
-        height={image.height}
-        highlightCorrect={highlightCorrectTiles}
-      />
-    </>
+      <div className="p-6 w-full h-full flex items-center justify-center overflow-hidden">
+        <Tileset
+          tiles={tiles}
+          onTileClick={handleTileClick}
+          width={image.width}
+          height={image.height}
+          highlightCorrect={highlightCorrectTiles}
+        />
+      </div>
+    </div>
   );
 }
 

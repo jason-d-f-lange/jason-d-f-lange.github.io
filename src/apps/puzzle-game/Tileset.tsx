@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
-import { TileData } from "../types/Tile";
 import Tile from "./Tile";
+import { TileData } from "./types/Tile";
 
 type ContainerProps = {
   width: number;
@@ -10,6 +10,8 @@ type ContainerProps = {
 const Container = styled.div<ContainerProps>(({ width, height }) => ({
   width,
   height,
+  maxWidth: "100%",
+  maxHeight: "100%",
   outline: "1px solid black",
   display: "flex",
   flexDirection: "column",

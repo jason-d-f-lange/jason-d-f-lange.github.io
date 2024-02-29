@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
-import { TileData } from "../types/Tile";
-import { tileInOriginalPosition } from "../utils/TileUtils";
+import { TileData } from "./types/Tile";
+import { tileInOriginalPosition } from "./utils/TileUtils";
 
 type Props = {
   tile: TileData;
@@ -14,7 +14,6 @@ const Cell = styled.div<CellProps>(({ tile, highlightCorrect }) => ({
   boxSizing: "border-box",
   width: tile.width,
   height: tile.height,
-  // flex: "1 0 auto",
   backgroundImage: `url("${tile.image.src}")`,
   backgroundPositionX: tile.position.x * -1,
   backgroundPositionY: tile.position.y * -1,
