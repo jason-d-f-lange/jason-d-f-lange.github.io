@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import Settings from "./Settings";
 import Tileset from "./Tileset";
@@ -17,6 +18,7 @@ function App() {
   const [columns, setColumns] = useState<number>(3);
   const [highlightCorrectTiles, setHighlightCorrectTiles] =
     useState<boolean>(false);
+  const [showOriginalImage, setShowOriginalImage] = useState<boolean>(false);
 
   useEffect(() => {
     loadImage("puzzle.jpg").then((image) => {
@@ -41,14 +43,26 @@ function App() {
         />
       </div>
 
-      <div className="p-6 w-full h-full flex items-center justify-center overflow-hidden">
-        <Tileset
-          tiles={tiles}
-          onTileClick={handleTileClick}
-          width={image.width}
-          height={image.height}
-          highlightCorrect={highlightCorrectTiles}
-        />
+      <div className="p-6 w-full h-full flex flex-col gap-3 items-center justify-center overflow-hidden">
+        {showOriginalImage ? (
+          <img src="puzzle.jpg" height={image.height} width={image.width} />
+        ) : (
+          <Tileset
+            tiles={tiles}
+            onTileClick={handleTileClick}
+            width={image.width}
+            height={image.height}
+            highlightCorrect={highlightCorrectTiles}
+          />
+        )}
+        <Button
+          variant="outline"
+          disabled={!image}
+          onMouseEnter={() => setShowOriginalImage(true)}
+          onMouseLeave={() => setShowOriginalImage(false)}
+        >
+          Hover over me to see the original image
+        </Button>
       </div>
     </div>
   );

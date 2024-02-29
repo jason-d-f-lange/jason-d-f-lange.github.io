@@ -12,7 +12,6 @@ const Container = styled.div<ContainerProps>(({ width, height }) => ({
   height,
   maxWidth: "100%",
   maxHeight: "100%",
-  outline: "1px solid black",
   display: "flex",
   flexDirection: "column",
   flexWrap: "wrap",
