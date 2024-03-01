@@ -14,12 +14,11 @@ const calculateIdealTileHeight = (
 };
 
 const shuffle = (tiles: TileData[]): TileData[] => {
-  const shuffleOnce = (tiles: TileData[]): TileData[] => {
-    let currentIndex = tiles.length;
-    let randomIndex;
+  let shuffles = 0;
 
-    while (currentIndex > 0) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
+  do {
+    for (let currentIndex = tiles.length; currentIndex > 0; currentIndex--) {
+      const randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
 
       const temp = tiles[currentIndex].position;
@@ -27,12 +26,8 @@ const shuffle = (tiles: TileData[]): TileData[] => {
       tiles[randomIndex].position = temp;
     }
 
-    return tiles;
-  };
-
-  while (tiles.some(tileInOriginalPosition)) {
-    shuffleOnce(tiles);
-  }
+    shuffles++;
+  } while (tiles.some(tileInOriginalPosition) && shuffles < 10);
 
   return tiles;
 };
