@@ -11,10 +11,10 @@ type Props = {
 type CellProps = Pick<Props, "tile" | "highlightCorrect">;
 
 const Cell = styled.div<CellProps>(({ tile, highlightCorrect }) => ({
-  boxSizing: "border-box",
   width: tile.width,
   height: tile.height,
   backgroundImage: `url("${tile.image.src}")`,
+  backgroundSize: `${tile.image.width}px ${tile.image.height}px`,
   backgroundPositionX: tile.position.x * -1,
   backgroundPositionY: tile.position.y * -1,
   "&:hover": {

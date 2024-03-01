@@ -71,7 +71,6 @@ function App() {
                   src={image.src}
                   height={image.height}
                   width={image.width}
-                  className="cursor-not-allowed"
                 />
               ) : (
                 <Tileset
