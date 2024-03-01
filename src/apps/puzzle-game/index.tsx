@@ -4,10 +4,10 @@ import Settings from "./Settings";
 import Solved from "./Solved";
 import Tileset from "./Tileset";
 import { TileData } from "./types/Tile";
-import { loadImage, resizeImage } from "./utils/ImageUtils";
+import { loadImage, resizeImageToFit } from "./utils/ImageUtils";
 import { generateTiles, puzzleSolved, selectTile } from "./utils/TileUtils";
 
-const imagePath = "puzzle.jpg";
+const imagePath = "puzzle2.jpg";
 
 function App() {
   const playingAreaRef = useRef<HTMLDivElement | null>(null);
@@ -27,20 +27,16 @@ function App() {
     const init = async () => {
       if (playingAreaRef.current == null) return;
 
-      const { offsetWidth: availableWidth, offsetHeight: availableHeight } =
-        playingAreaRef.current;
+      const availableWidth = playingAreaRef.current.offsetWidth;
+      const availableHeight = playingAreaRef.current.offsetHeight;
 
       const image = await loadImage(imagePath);
+      const resizedImage = resizeImageToFit(
+        image,
+        availableWidth,
+        availableHeight
+      );
 
-      let targetWidth = image.width;
-      let targetHeight = image.height;
-
-      while (targetWidth > availableWidth || targetHeight > availableHeight) {
-        targetWidth = targetWidth * 0.8;
-        targetHeight = targetHeight * 0.8;
-      }
-
-      const resizedImage = await resizeImage(image, targetWidth, targetHeight);
       setImage(resizedImage);
       setTiles(generateTiles(resizedImage, columns));
     };

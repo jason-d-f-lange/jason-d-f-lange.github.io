@@ -5,22 +5,21 @@ export const loadImage = async (url: string): Promise<HTMLImageElement> =>
     image.src = url;
   });
 
-export const resizeImage = async (
+export const resizeImageToFit = (
   image: HTMLImageElement,
-  newWidth: number,
-  newHeight: number
-): Promise<HTMLImageElement> => {
-  return new Promise((resolve) => {
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d")!;
+  availableWidth: number,
+  availableHeight: number
+): HTMLImageElement => {
+  let targetWidth = image.width;
+  let targetHeight = image.height;
 
-    canvas.width = newWidth;
-    canvas.height = newHeight;
+  while (targetWidth > availableWidth || targetHeight > availableHeight) {
+    targetWidth = targetWidth * 0.8;
+    targetHeight = targetHeight * 0.8;
+  }
 
-    ctx.drawImage(image, 0, 0, newWidth, newHeight);
+  image.width = targetWidth;
+  image.height = targetHeight;
 
-    const resizedImage = new Image();
-    resizedImage.src = canvas.toDataURL();
-    resizedImage.onload = () => resolve(resizedImage);
-  });
+  return image;
 };
