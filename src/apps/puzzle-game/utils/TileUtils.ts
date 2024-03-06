@@ -28,7 +28,7 @@ export const shuffleTiles = (tiles: TileData[]): TileData[] => {
     }
 
     shuffles++;
-  } while (cloned.some(tileInOriginalPosition) && shuffles < 10);
+  } while (cloned.some(tileInOriginalPosition) && shuffles < 100);
 
   return cloned;
 };
