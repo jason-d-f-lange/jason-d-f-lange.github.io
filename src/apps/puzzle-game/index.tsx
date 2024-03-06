@@ -1,13 +1,18 @@
 import { Button } from "@/components/ui/button";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Settings from "./Settings";
 import Solved from "./Solved";
 import Tileset from "./Tileset";
 import { TileData } from "./types/Tile";
 import { loadImage, resizeImageToFit } from "./utils/ImageUtils";
-import { generateTiles, puzzleSolved, selectTile } from "./utils/TileUtils";
+import {
+  generateTiles,
+  puzzleSolved,
+  selectTile,
+  shuffleTiles,
+} from "./utils/TileUtils";
 
-const imagePath = "puzzle2.jpg";
+const imagePath = "puzzle.jpg";
 
 function App() {
   const playingAreaRef = useRef<HTMLDivElement | null>(null);
@@ -20,8 +25,7 @@ function App() {
     useState<boolean>(false);
 
   const [showOriginalImage, setShowOriginalImage] = useState<boolean>(false);
-
-  const solved = useMemo(() => !!tiles.length && puzzleSolved(tiles), [tiles]);
+  const [solved, setSolved] = useState<boolean>(false);
 
   useEffect(() => {
     const init = async () => {
@@ -39,13 +43,20 @@ function App() {
 
       setImage(resizedImage);
       setTiles(generateTiles(resizedImage, columns));
+
+      setTimeout(() => {
+        setTiles(shuffleTiles);
+      }, 750);
     };
 
     init();
   }, [playingAreaRef, columns]);
 
-  const handleTileClick = (selectedTile: TileData) =>
-    setTiles((prev) => selectTile(prev, selectedTile));
+  const handleTileClick = (selectedTile: TileData) => {
+    const updatedTiles = selectTile(tiles, selectedTile);
+    setTiles(updatedTiles);
+    setSolved(puzzleSolved(updatedTiles));
+  };
 
   return (
     <>
@@ -74,6 +85,7 @@ function App() {
                 />
               ) : (
                 <Tileset
+                  image={image}
                   tiles={tiles}
                   onTileClick={handleTileClick}
                   width={image.width}

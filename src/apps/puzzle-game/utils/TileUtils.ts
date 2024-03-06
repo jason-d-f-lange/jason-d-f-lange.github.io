@@ -13,23 +13,24 @@ const calculateIdealTileHeight = (
   return image.height / idealNumberOfRows;
 };
 
-const shuffle = (tiles: TileData[]): TileData[] => {
+export const shuffleTiles = (tiles: TileData[]): TileData[] => {
+  const cloned = structuredClone(tiles);
   let shuffles = 0;
 
   do {
-    for (let currentIndex = tiles.length; currentIndex > 0; currentIndex--) {
+    for (let currentIndex = cloned.length; currentIndex > 0; currentIndex--) {
       const randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
 
-      const temp = tiles[currentIndex].position;
-      tiles[currentIndex].position = tiles[randomIndex].position;
-      tiles[randomIndex].position = temp;
+      const temp = cloned[currentIndex].position;
+      cloned[currentIndex].position = cloned[randomIndex].position;
+      cloned[randomIndex].position = temp;
     }
 
     shuffles++;
-  } while (tiles.some(tileInOriginalPosition) && shuffles < 10);
+  } while (cloned.some(tileInOriginalPosition) && shuffles < 10);
 
-  return tiles;
+  return cloned;
 };
 
 export const generateTiles = (
@@ -46,8 +47,7 @@ export const generateTiles = (
       const position: Position = { x, y };
 
       tiles.push({
-        id: tiles.length,
-        image,
+        id: crypto.randomUUID(),
         width: tileWidth,
         height: tileHeight,
         originalPosition: position,
@@ -57,7 +57,7 @@ export const generateTiles = (
     }
   }
 
-  return shuffle(tiles);
+  return tiles;
 };
 
 export const selectTile = (

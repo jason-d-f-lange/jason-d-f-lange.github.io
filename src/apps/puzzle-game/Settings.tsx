@@ -46,7 +46,7 @@ function Settings({
         <Slider
           defaultValue={[columns]}
           onValueCommit={handleColumnsChanged}
-          min={1}
+          min={2}
           max={5}
           step={1}
           disabled={disabled}

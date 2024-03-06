@@ -4,8 +4,7 @@ export type Position = {
 };
 
 export type TileData = {
-  id: number;
-  image: HTMLImageElement;
+  id: string;
   width: number;
   height: number;
   originalPosition: Position;

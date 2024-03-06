@@ -15,9 +15,11 @@ const Container = styled.div<ContainerProps>(({ width, height }) => ({
   display: "flex",
   flexDirection: "column",
   flexWrap: "wrap",
+  position: "relative",
 }));
 
 type Props = {
+  image: HTMLImageElement;
   tiles: TileData[];
   onTileClick: (tile: TileData) => void;
   width: number;
@@ -26,6 +28,7 @@ type Props = {
 };
 
 function Tileset({
+  image,
   tiles,
   onTileClick,
   width,
@@ -37,6 +40,7 @@ function Tileset({
       {tiles.map((tile) => (
         <Tile
           key={tile.id}
+          image={image}
           tile={tile}
           onClick={onTileClick}
           highlightCorrect={highlightCorrect}
