@@ -1,6 +1,7 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
+import { cn } from "@/utils";
 import { ReactNode } from "react";
 
 type Props = {
@@ -33,7 +34,12 @@ function Settings({
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div
+      className={cn(
+        "flex flex-col gap-4 h-full w-full",
+        disabled && "opacity-50 cursor-not-allowed"
+      )}
+    >
       <h2 className="text-l font-bold">Settings</h2>
 
       <Setting>
