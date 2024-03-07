@@ -1,15 +1,20 @@
 import { render } from "@testing-library/react";
 import Settings from "../Settings";
 
-it("should render", () => {
+it("should disable correct tiles checkbox", () => {
   const component = render(
     <Settings
-      disabled={false}
       columns={2}
       onColumnsChanged={jest.fn()}
       highlightCorrectTiles={false}
       onHighlightCorrectTilesChanged={jest.fn()}
+      disabled
     />
   );
-  expect(component).toBeInTheDocument();
+
+  const checkbox = component.getByRole("checkbox", {
+    name: /highlight correct/i,
+  });
+
+  expect(checkbox).toBeDisabled();
 });

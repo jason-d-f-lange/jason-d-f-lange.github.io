@@ -25,3 +25,18 @@ Object.defineProperty(globalThis, "structuredClone", {
     return JSON.parse(JSON.stringify(val));
   },
 });
+
+// Polyfill for ResizeObserver which isn't supported in jsdom https://github.com/jsdom/jsdom/issues/3368
+Object.defineProperty(globalThis, "ResizeObserver", {
+  value: class ResizeObserver {
+    observe() {
+      // do nothing
+    }
+    unobserve() {
+      // do nothing
+    }
+    disconnect() {
+      // do nothing
+    }
+  },
+});
