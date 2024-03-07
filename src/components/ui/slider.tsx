@@ -23,6 +23,7 @@ const Slider = React.forwardRef<
         "block h-5 w-5 rounded-full border-2 border-primary bg-background cursor-grab active:cursor-grabbing ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
         props.disabled && "cursor-not-allowed active:cursor-not-allowed"
       )}
+      aria-labelledby={props["aria-labelledby"]}
     />
   </SliderPrimitive.Root>
 ));

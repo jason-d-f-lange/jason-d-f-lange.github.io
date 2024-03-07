@@ -43,7 +43,7 @@ function Settings({
       <h2 className="text-l font-bold">Settings</h2>
 
       <Setting>
-        <Label htmlFor="difficulty">
+        <Label id="difficulty">
           Difficulty
           <p className="text-[0.8rem] text-muted-foreground mt-1">
             (This will reset the puzzle)
@@ -56,6 +56,7 @@ function Settings({
           max={5}
           step={1}
           disabled={disabled}
+          aria-labelledby="difficulty"
         />
       </Setting>
 
