@@ -28,9 +28,43 @@ export const shuffleTiles = (tiles: TileData[]): TileData[] => {
     }
 
     shuffles++;
-  } while (cloned.some(tileInOriginalPosition) && shuffles < 100);
+  } while (
+    (cloned.some(tileInOriginalPosition) ||
+      cloned.some((tile) => hasCorrectTileNextToIt(cloned, tile))) &&
+    shuffles < 100
+  );
 
   return cloned;
+};
+
+const hasCorrectTileNextToIt = (tiles: TileData[], tile: TileData): boolean => {
+  for (const other of tiles) {
+    const isNorth =
+      other.position.x === tile.position.x &&
+      other.position.y === tile.position.y - tile.height;
+
+    const isEast =
+      other.position.y === tile.position.y &&
+      other.position.x === tile.position.x + tile.width;
+
+    if (isNorth) {
+      const isCorrect =
+        tile.originalPosition.x === other.originalPosition.x &&
+        tile.originalPosition.y === other.originalPosition.y + tile.height;
+      if (isCorrect) return true;
+      else continue;
+    }
+
+    if (isEast) {
+      const isCorrect =
+        tile.originalPosition.y === other.originalPosition.y &&
+        tile.originalPosition.x === other.originalPosition.x - tile.width;
+      if (isCorrect) return true;
+      else continue;
+    }
+  }
+
+  return false;
 };
 
 export const generateTiles = (

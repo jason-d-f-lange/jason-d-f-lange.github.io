@@ -40,6 +40,56 @@ it("should not have any tiles in their original position after shuffling", () =>
   }
 });
 
+it("should not have any tiles horizontally adjacent to correct tiles after shuffling", () => {
+  // A 4x1 image with 4 columns will generate 1 row of 4 tiles
+  const image = new Image(4, 1);
+  // Give each tile a simple id: 0, 1, 2, 3
+  const tiles = generateTiles(image, 4).map((tile, index) => ({
+    ...tile,
+    id: index.toString(),
+  }));
+
+  for (let i = 0; i < 100; i++) {
+    const shuffledTiles = shuffleTiles(tiles);
+
+    // Sort the shuffled tiles by their newly shuffled position
+    const sortedIds = shuffledTiles
+      .sort((a, b) => (a.position.x < b.position.x ? -1 : 1))
+      .map((it) => Number(it.id));
+
+    // If there are any sequential ids then there are tiles adjacent to a correct tile
+    // e.g. 0, 2, 3, 1 is invalid because 2 and 3 were originally next to each other
+    const hasSequentialIds = sortedIds.some(
+      (id, index) => id === sortedIds[index + 1] - 1
+    );
+
+    expect(hasSequentialIds).toBe(false);
+  }
+});
+
+// See the above test for the corresponding horizontal check
+it("should not have any tiles vertically adjacent to correct tiles after shuffling", () => {
+  const image = new Image(1, 4);
+  const tiles = generateTiles(image, 1).map((tile, index) => ({
+    ...tile,
+    id: index.toString(),
+  }));
+
+  for (let i = 0; i < 100; i++) {
+    const shuffledTiles = shuffleTiles(tiles);
+
+    const sortedIds = shuffledTiles
+      .sort((a, b) => (a.position.y < b.position.y ? -1 : 1))
+      .map((it) => Number(it.id));
+
+    const hasSequentialIds = sortedIds.some(
+      (id, index) => id === sortedIds[index + 1] - 1
+    );
+
+    expect(hasSequentialIds).toBe(false);
+  }
+});
+
 it("should generate equally sized tiles", () => {
   const image = new Image(600, 1000);
   const tiles = generateTiles(image, 2);
