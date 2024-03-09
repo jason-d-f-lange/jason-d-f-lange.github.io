@@ -8,17 +8,18 @@ type Props = {
   tile: TileData;
   onClick: (tile: TileData) => void;
   highlightCorrect: boolean;
+  disabled: boolean;
 };
 
 type CellProps = { animate: boolean } & Pick<
   Props,
-  "image" | "tile" | "highlightCorrect"
+  "image" | "tile" | "highlightCorrect" | "disabled"
 >;
 
 const ANIMATION_DURATION_MS = 750;
 
 const Cell = styled.div<CellProps>(
-  ({ image, tile, highlightCorrect, animate }) => ({
+  ({ image, tile, highlightCorrect, animate, disabled }) => ({
     width: tile.width,
     height: tile.height,
     backgroundImage: `url("${image.src}")`,
@@ -35,11 +36,13 @@ const Cell = styled.div<CellProps>(
     }),
     border: (tile.selected && "4px solid red") || undefined,
     "&:hover": {
-      border: (!tile.selected && "2px solid white") || undefined,
-      cursor: "pointer",
-      opacity: 0.9,
+      ...(!disabled && {
+        border: (!tile.selected && "2px solid white") || undefined,
+        cursor: "pointer",
+        opacity: 0.9,
+      }),
     },
-    ...(highlightCorrect &&
+    ...(!animate && highlightCorrect &&
       tileInOriginalPosition(tile) && {
         "&::before": {
           backgroundColor: "green",
@@ -56,7 +59,7 @@ const Cell = styled.div<CellProps>(
   })
 );
 
-function Tile({ image, tile, onClick, highlightCorrect }: Props) {
+function Tile({ image, tile, onClick, highlightCorrect, disabled }: Props) {
   const [animate, setAnimate] = useState(true);
 
   useEffect(() => {
@@ -72,9 +75,12 @@ function Tile({ image, tile, onClick, highlightCorrect }: Props) {
     <Cell
       image={image}
       tile={tile}
-      onClick={() => onClick(tile)}
+      onClick={() => {
+        if (!disabled) onClick(tile);
+      }}
       highlightCorrect={highlightCorrect}
       animate={animate}
+      disabled={disabled}
     />
   );
 }

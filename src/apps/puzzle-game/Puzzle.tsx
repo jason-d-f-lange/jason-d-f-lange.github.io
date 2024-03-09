@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
+import Confetti from "react-confetti";
 import Tileset from "./Tileset";
 import { TileData } from "./types/Tile";
 import {
@@ -13,10 +14,17 @@ type Props = {
   image: HTMLImageElement;
   columns: number;
   highlightCorrectTiles: boolean;
+  solved: boolean;
   onSolve: () => void;
 };
 
-const Puzzle = ({ image, columns, highlightCorrectTiles, onSolve }: Props) => {
+const Puzzle = ({
+  image,
+  columns,
+  highlightCorrectTiles,
+  solved,
+  onSolve,
+}: Props) => {
   const [tiles, setTiles] = useState<TileData[]>([]);
   const [showOriginalImage, setShowOriginalImage] = useState<boolean>(false);
 
@@ -47,16 +55,38 @@ const Puzzle = ({ image, columns, highlightCorrectTiles, onSolve }: Props) => {
           onTileClick={handleTileClick}
           width={image.width}
           height={image.height}
-          highlightCorrect={highlightCorrectTiles}
+          highlightCorrect={!solved && highlightCorrectTiles}
+          disabled={solved}
         />
       )}
-      <Button
-        variant="outline"
-        onMouseEnter={() => setShowOriginalImage(true)}
-        onMouseLeave={() => setShowOriginalImage(false)}
-      >
-        Hover over me to see the original image
-      </Button>
+
+      {!solved && (
+        <Button
+          variant="outline"
+          onMouseEnter={() => setShowOriginalImage(true)}
+          onMouseLeave={() => setShowOriginalImage(false)}
+        >
+          Hover over me to see the original image
+        </Button>
+      )}
+
+      {solved && (
+        <>
+          <Confetti
+            style={{ zIndex: 51 }}
+            numberOfPieces={500}
+            tweenDuration={10000}
+            recycle={false}
+          />
+          <Button
+            variant="destructive"
+            className="animate-fade-in"
+            onClick={() => window.location.reload()}
+          >
+            Start again
+          </Button>
+        </>
+      )}
     </>
   );
 };

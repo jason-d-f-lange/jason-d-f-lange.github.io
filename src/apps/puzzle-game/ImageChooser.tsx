@@ -64,7 +64,7 @@ const ImageChooser = ({ onChange }: Props) => {
           />
         ))}
       </Row>
-      
+
       <h3 className="text-l font-bold">OR</h3>
 
       <label

@@ -2,7 +2,6 @@ import { useRef, useState } from "react";
 import ImageChooser from "./ImageChooser";
 import Puzzle from "./Puzzle";
 import Settings from "./Settings";
-import Solved from "./Solved";
 import { resizeImageToFit } from "./utils/ImageUtils";
 
 function App() {
@@ -53,13 +52,12 @@ function App() {
               image={image}
               columns={columns}
               highlightCorrectTiles={highlightCorrectTiles}
+              solved={solved}
               onSolve={() => setSolved(true)}
             />
           )}
         </div>
       </div>
-
-      {solved && <Solved />}
     </>
   );
 }

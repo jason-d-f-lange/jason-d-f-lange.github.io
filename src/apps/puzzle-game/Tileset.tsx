@@ -25,6 +25,7 @@ type Props = {
   width: number;
   height: number;
   highlightCorrect: boolean;
+  disabled: boolean;
 };
 
 function Tileset({
@@ -34,6 +35,7 @@ function Tileset({
   width,
   height,
   highlightCorrect,
+  disabled,
 }: Props) {
   return (
     <Container width={width} height={height}>
@@ -44,6 +46,7 @@ function Tileset({
           tile={tile}
           onClick={onTileClick}
           highlightCorrect={highlightCorrect}
+          disabled={disabled}
         />
       ))}
     </Container>
