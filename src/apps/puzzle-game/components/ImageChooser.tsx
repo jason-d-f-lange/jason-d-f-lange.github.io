@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { ChangeEvent } from "react";
-import { loadImage } from "./utils/ImageUtils";
+import { loadImage } from "../utils/ImageUtils";
 
 const Row = styled.div({
   display: "flex",
@@ -23,11 +23,11 @@ const Img = styled.img({
   },
 });
 
-type Props = {
+export type ImageChooserProps = {
   onChange: (image: HTMLImageElement) => void;
 };
 
-const ImageChooser = ({ onChange }: Props) => {
+const ImageChooser = ({ onChange }: ImageChooserProps) => {
   const handleImageSelected = (path: string) => {
     loadImage(path).then(onChange);
   };
@@ -50,7 +50,7 @@ const ImageChooser = ({ onChange }: Props) => {
     reader.readAsDataURL(file);
   };
 
-  const imagePaths = ["puzzle.jpg", "puzzle2.jpg", "puzzle3.jpg"];
+  const imagePaths = ["puzzle1.jpg", "puzzle2.jpg", "puzzle3.jpg"];
 
   return (
     <>
@@ -74,10 +74,10 @@ const ImageChooser = ({ onChange }: Props) => {
         Choose file
       </label>
       <input
-        className="opacity-0"
         id="upload"
         type="file"
         accept="image/png, image/jpg, image/jpeg"
+        style={{ opacity: 0 }}
         onChange={handleImageUpload}
       />
     </>

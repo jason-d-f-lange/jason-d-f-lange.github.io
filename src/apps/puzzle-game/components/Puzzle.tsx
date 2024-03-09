@@ -1,16 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import Confetti from "react-confetti";
-import Tileset from "./Tileset";
-import { TileData } from "./types/Tile";
+import { TileData } from "../types/Tile";
 import {
   generateTiles,
   puzzleSolved,
   selectTile,
   shuffleTiles,
-} from "./utils/TileUtils";
+} from "../utils/TileUtils";
+import Tileset from "./Tileset";
 
-type Props = {
+export type PuzzleProps = {
   image: HTMLImageElement;
   columns: number;
   highlightCorrectTiles: boolean;
@@ -24,7 +24,7 @@ const Puzzle = ({
   highlightCorrectTiles,
   solved,
   onSolve,
-}: Props) => {
+}: PuzzleProps) => {
   const [tiles, setTiles] = useState<TileData[]>([]);
   const [showOriginalImage, setShowOriginalImage] = useState<boolean>(false);
 
@@ -42,10 +42,18 @@ const Puzzle = ({
     if (puzzleSolved(updatedTiles)) onSolve();
   };
 
-  if (!image) return;
-
   return (
     <>
+      <h2 className="font-bold">
+        {solved ? (
+          <span className="animate-fade-in">
+            You solved it! <span className="text-2xl">🎉</span>
+          </span>
+        ) : (
+          "Unscramble the image"
+        )}
+      </h2>
+
       {showOriginalImage ? (
         <img src={image.src} height={image.height} width={image.width} />
       ) : (

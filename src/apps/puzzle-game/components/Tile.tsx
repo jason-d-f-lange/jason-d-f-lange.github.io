@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
-import { TileData } from "./types/Tile";
-import { tileInOriginalPosition } from "./utils/TileUtils";
+import { TileData } from "../types/Tile";
+import { tileInOriginalPosition } from "../utils/TileUtils";
 
 type Props = {
   image: HTMLImageElement;
@@ -18,7 +18,7 @@ type CellProps = { animate: boolean } & Pick<
 
 const ANIMATION_DURATION_MS = 750;
 
-const Cell = styled.div<CellProps>(
+const TileImage = styled.div<CellProps>(
   ({ image, tile, highlightCorrect, animate, disabled }) => ({
     width: tile.width,
     height: tile.height,
@@ -42,7 +42,8 @@ const Cell = styled.div<CellProps>(
         opacity: 0.9,
       }),
     },
-    ...(!animate && highlightCorrect &&
+    ...(!animate &&
+      highlightCorrect &&
       tileInOriginalPosition(tile) && {
         "&::before": {
           backgroundColor: "green",
@@ -72,7 +73,7 @@ function Tile({ image, tile, onClick, highlightCorrect, disabled }: Props) {
   }, [tile.position]);
 
   return (
-    <Cell
+    <TileImage
       image={image}
       tile={tile}
       onClick={() => {
@@ -81,6 +82,7 @@ function Tile({ image, tile, onClick, highlightCorrect, disabled }: Props) {
       highlightCorrect={highlightCorrect}
       animate={animate}
       disabled={disabled}
+      data-testid="tile"
     />
   );
 }

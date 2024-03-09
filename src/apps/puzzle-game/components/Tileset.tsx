@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
+import { TileData } from "../types/Tile";
 import Tile from "./Tile";
-import { TileData } from "./types/Tile";
 
 type ContainerProps = {
   width: number;
